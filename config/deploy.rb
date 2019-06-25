@@ -1,6 +1,7 @@
 set :application, 'maintenance-server'
 set :scm, :git
-set :repo_url, 'ssh://git@bitbucket.org/skayred/maintenance-server.git'
+set :repo_url, 'ssh://git@bitbucket.org/skayred/tdd-lti.git'
+
 set :keep_releases, 3
 set :pty, true
 
@@ -9,7 +10,7 @@ set :default_stage, :development
 set :linked_dirs, fetch(:linked_dirs, []) + %w{public/system} + %w{public/ckeditor_assets} + %w{public/images}
 
 set :rvm_type, :system
-set :rvm_ruby_version, '2.3.0'
+set :rvm_ruby_version, '2.6.3'
 
 before 'deploy:assets:precompile', 'npm:inst'
 
