@@ -33,5 +33,5 @@ production:
   database: tdd_lti
   pool: 5
   username: tdd_lti
-  password:
+  password: tdd_lti
   timeout: 5000
