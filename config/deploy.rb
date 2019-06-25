@@ -12,14 +12,14 @@ set :linked_dirs, fetch(:linked_dirs, []) + %w{public/system} + %w{public/ckedit
 set :rvm_type, :system
 set :rvm_ruby_version, '2.6.3'
 
-before 'deploy:assets:precompile', 'npm:inst'
+# before 'deploy:assets:precompile', 'npm:inst'
 
 namespace :deploy do
   task :restart do
     on roles(:app) do
       within release_path do
         with rails_env: fetch(:rails_env) do
-          execute :bundle, :exec, :rake, 'npm:install'
+          # execute :bundle, :exec, :rake, 'npm:install'
           # execute :bundle, :exec, :rake, 'assets:precompile'
           # execute :bundle, :exec, :rake, 'assets:non_digested'
         end
