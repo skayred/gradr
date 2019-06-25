@@ -1,0 +1,22 @@
+%h4 Test repositories, assignment #{@assignment.id} (#{@assignment.name})
+%a.btn.btn-success{type: "button", href: new_course_assignment_test_rep_path(@course, @assignment)}
+  %span.glyphicon.glyphicon-plus
+  Add new
+%table.table.table-hover
+  %thead
+    %tr
+      %th #
+      %th Name
+      %th Secret?
+      %th
+  %tbody
+    - @reps.each_with_index do |rep,i|
+      %tr
+        %td= i+1
+        %td= rep.name
+        %td= rep.is_secret
+        %td
+          %a.btn.btn-default{type: "button", href: edit_course_assignment_test_rep_path(@course, @assignment, rep)}
+            %span.glyphicon.glyphicon-pencil
+          =link_to [@course, @assignment, rep], 'data-method' => :delete, :class => "btn btn-default", type: 'button', data: {confirm: "Are you sure?"} do
+            %span.glyphicon.glyphicon-remove

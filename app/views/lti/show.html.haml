@@ -1,0 +1,40 @@
+%hmtl
+  %head
+    = stylesheet_link_tag "application", :media => "all", 'data-turbolinks-track' => true
+    = javascript_include_tag "application", 'data-turbolinks-track' => true
+  %body
+    %style
+      \.lti-body:after { content: "#{@task.name}"; }
+    .lti-body
+      %form{method: "post", style: 'max-width: 50%;'}
+        .form-group
+          %label Please provide the code repository.
+          %span.help-block Ensure that your repository is open.
+        .form-group
+          %label Teacher provided the following repositories for reference:
+          %ul.list-group
+            - @task.test_reps.where(is_secret: false).each do |rep|
+              %a.list-group-item{href: rep.name, target: 'page'}= rep.name
+        %input{name: '_method', type: 'hidden', value: 'put'}
+        .form-group
+          %label{for: 'source'} Your source repository
+          %input.form-control{name: 'source', type: 'text', width: '5', id: 'source', placeholder: 'Source repository', disabled: !@enabled}
+        %input.btn.btn-default{type: 'submit', value: 'Submit', disabled: !@enabled}
+        - if @sub
+          .btn.btn-success{'data-toggle'=> "collapse", 'href'=>"#footwear", 'aria-expanded'=>"false", 'aria-controls'=>"footwear"}
+            Latest submission
+          - if @sub.finished?
+            .collapse#footwear
+              .form-group
+                %label Score
+                %span.help-block= @sub.score
+              .form-group
+                %label Details
+                %pre.help-block= @sub.feedback
+              .form-group
+                %label Date received
+                %span.help-block= @sub.created_at
+          - else
+            .form-group
+              %label Checking in progress...
+              %span.help-block Please wait

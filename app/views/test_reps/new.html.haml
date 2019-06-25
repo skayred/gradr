@@ -1,0 +1,15 @@
+= form_for [@course, @assignment, @rep] do |f|
+  %fieldset
+    %legend
+      - if @rep
+        Edit repository #{@rep.id}
+      - else
+        New repository
+    .form-group
+      = f.label :name, 'Repository URL'
+      = f.text_field :name, class: 'form-control'
+    .checkbox
+      %label
+        = f.check_box :is_secret
+        Is hidden from students?
+    = f.submit 'Submit', class: 'btn btn-success'

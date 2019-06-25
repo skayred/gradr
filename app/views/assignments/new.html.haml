@@ -1,0 +1,14 @@
+= form_for [@course, @assignment] do |f|
+  %fieldset
+    %legend
+      - if @assignment
+        Edit assignment
+      - else
+        New assignment
+    .form-group
+      = f.label :name, 'Assignment name'
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :cooldown, 'Assignment cooldown (hours)'
+      = f.text_field :cooldown, class: 'form-control'
+    = f.submit 'Submit', class: 'btn btn-success'

@@ -1,0 +1,17 @@
+!!! XML
+%imsx_POXEnvelopeRequest{xmlns: "http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0"}
+  %imsx_POXHeader
+    %imsx_POXRequestHeaderInfo
+      %imsx_version V1.0
+      %imsx_messageIdentifier 12341234
+  %imsx_POXBody
+    %replaceResultRequest
+      %resultRecord
+        %sourcedGUID
+          %sourcedId= session
+        %result
+          %resultScore
+            %language en
+            %textString= score
+          %resultData
+            %ltiLaunchUrl http://localhost:4567/assessment/start

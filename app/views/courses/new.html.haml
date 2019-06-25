@@ -1,0 +1,11 @@
+= form_for @course do |f|
+  %fieldset
+    %legend
+      - if @course
+        Edit course
+      - else
+        New course
+    .form-group
+      = f.label :name, 'Course name'
+      = f.text_field :name, class: 'form-control'
+    = f.submit 'Submit', class: 'btn btn-success'
