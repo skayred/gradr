@@ -36,11 +36,11 @@ namespace :deploy do
     on roles(:all), in: :sequence, wait: 5 do
       within release_path do
         with rails_env: fetch(:rails_env) do
-          execute :bundle, :exec, :rake, 'npm:install'
+          # execute :bundle, :exec, :rake, 'npm:install'
         end
       end
     end
   end
 
-  after :finishing, :sitemap
+  # after :finishing, :sitemap
 end

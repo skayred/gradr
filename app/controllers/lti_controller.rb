@@ -1,6 +1,5 @@
 require 'ims/lti'
 require 'oauth'
-require 'Haml'
 require 'sidekiq/api'
 
 TESTER_SCRIPT = './lib/tester.sh'
