@@ -10,7 +10,7 @@ class TesterWorker
     subm = Submission.new user_id: user_id, assignment_id: task_id, jid: jid, status: :started
     subm.save!
 
-    `sh #{TESTER_SCRIPT} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
+    `bash #{TESTER_SCRIPT} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
 
     report = JSON.load File.open('./log/test.log')
     feedback = File.read('./log/output.log')
