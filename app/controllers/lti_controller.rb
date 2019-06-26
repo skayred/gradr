@@ -31,8 +31,10 @@ class LtiController < ActionController::Base
     end
 
     @task = Assignment.find_by_id params[:id]
-    @enabled = (DateTime.now - Submission.last.created_at.to_datetime).to_f*24 >= @task.cooldown
     @sub = Submission.where(assignment_id: @task.id, user_id: session['user_id']).order("created_at").last
+    @enabled = true
+
+    @enabled = (DateTime.now - Submission.last.created_at.to_datetime).to_f*24 >= @task.cooldown if @sub
   end
 
   def update
