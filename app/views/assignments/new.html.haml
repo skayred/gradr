@@ -9,6 +9,31 @@
       = f.label :name, 'Assignment name'
       = f.text_field :name, class: 'form-control'
     .form-group
-      = f.label :cooldown, 'Assignment cooldown (hours)'
+      = f.label :cooldown, 'Assignment cooldown (minutes)'
       = f.text_field :cooldown, class: 'form-control'
+    .form-group
+      %label Weights
+      %table.table
+        %thead
+          %tr
+            %th
+              %button.btn.btn-success{type: 'button', 'data-toggle': "modal", 'data-target': "##{nil}_weight"}
+                +
+            %th Name
+            %th Weight
+            %th
+        %tbody
+          - @assignment.weights.each_with_index do |w,i|
+            %tr
+              %td= i+1
+              %td= w.name
+              %td= w.weight
+              %td
+                %a.btn.btn-default{type: 'button', 'data-toggle': "modal", 'data-target': "##{w.id}_weight"}
+                  %span.glyphicon.glyphicon-pencil
+                =link_to course_assignment_weight_path(@course, @assignment, w), 'data-method' => :delete, :class => "btn btn-default", type: 'button', data: {confirm: "Are you sure?"} do
+                  %span.glyphicon.glyphicon-remove
     = f.submit 'Submit', class: 'btn btn-success'
+= render partial: 'shared/weight_modal', locals: {id: nil, weight: nil, assignment: @assignment, url: "/courses/#{@assignment.course.id}/assignments/#{@assignment.id}/weights"}
+- @assignment.weights.each_with_index do |w,i|
+  = render partial: 'shared/weight_modal', locals: {id: w.id, weight: w, assignment: @assignment, url: "/courses/#{@assignment.course.id}/assignments/#{@assignment.id}/weights/#{w.id}"}

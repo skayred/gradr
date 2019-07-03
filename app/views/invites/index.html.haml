@@ -1,0 +1,23 @@
+%h4 Users
+%a.btn.btn-success{type: "button", href: new_invite_path}
+  %span.glyphicon.glyphicon-plus
+  Add new
+%table.table.table-hover
+  %thead
+    %tr
+      %th ID
+      %th e-mail
+      %th Role
+      %th Activated?
+      %th Confirmation URL
+      %th
+  %tbody
+    - @users.each do |u|
+      %tr
+        %td= u.id
+        %td= u.email
+        %td= u.role
+        %td= u.confirmed?
+        %td= user_confirmation_url(confirmation_token:u.confirmation_token)
+        %td
+          Actions

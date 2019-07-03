@@ -1,17 +1,31 @@
 class AssignmentsController < ApplicationController
+
   def index
     @course = Course.find_by_id(params[:course_id])
+
+    add_breadcrumb "Courses", :root_path
+    add_breadcrumb @course.name, edit_course_url(@course)
+    add_breadcrumb "Assignments"
+    
     @assignments = @course.assignments
   end
 
   def new
     @course = Course.find_by_id(params[:course_id])
     @assignment = Assignment.new course_id: params[:course_id]
+
+    add_breadcrumb "Courses", :root_path
+    add_breadcrumb @course.name, edit_course_url(@course)
+    add_breadcrumb "New assignment"
   end
 
   def edit
     @course = Course.find_by_id(params[:course_id])
     @assignment = Assignment.find_by_id(params[:id])
+
+    add_breadcrumb "Courses", :root_path
+    add_breadcrumb @course.name, edit_course_url(@course)
+    add_breadcrumb "Edit assignment: #{@assignment.name}"
 
     render :new
   end

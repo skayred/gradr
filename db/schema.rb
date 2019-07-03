@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_25_091317) do
+ActiveRecord::Schema.define(version: 2019_07_03_075412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(version: 2019_06_25_091317) do
   create_table "courses", force: :cascade do |t|
     t.string "name"
     t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "invite_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -59,8 +66,21 @@ ActiveRecord::Schema.define(version: 2019_06_25_091317) do
     t.datetime "updated_at", null: false
     t.string "key"
     t.string "secret"
+    t.integer "role", default: 0
+    t.boolean "activated", default: false, null: false
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "weights", force: :cascade do |t|
+    t.integer "assignment_id"
+    t.decimal "weight"
+    t.string "name"
   end
 
 end

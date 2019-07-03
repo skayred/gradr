@@ -1,0 +1,30 @@
+.modal.fade{role: "dialog", id: "#{id}_weight"}
+  .modal-dialog{role: "document"}
+    .modal-content
+      = form_tag(url, method: 'post') do
+        .modal-header
+          %button.close{type: 'button', 'data-dismiss': 'modal', 'aria-label': 'Close'}
+            %span{'aria-hidden': "true"} &times;
+          %h4.modal-title
+            - if id
+              Edit weight
+            - else
+              New weight
+        .modal-body
+          - if id
+            %input{name: '_method', type: 'hidden', value: 'put'}
+          - else
+            %input{name: '_method', type: 'hidden', value: 'post'}
+          %fieldset
+            .form-group
+              %label Name
+              %input.form-control{type: 'text', name: 'weight[name]', value: weight.try(:name)}
+            .form-group
+              %label Weight
+              %input.form-control{type: 'number', name: 'weight[weight]', value: weight.try(:weight), min: 0, max: 1, step: 0.1}
+        .modal-footer
+          %button.btn.btn-default{type: 'button', 'data-dismiss': 'modal'} Close
+          - if id
+            %input.btn.btn-success{type: 'submit', value: 'Update weight'}
+          - else
+            %input.btn.btn-success{type: 'submit', value: 'Create weight'}

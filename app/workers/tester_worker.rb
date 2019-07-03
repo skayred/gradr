@@ -10,33 +10,50 @@ class TesterWorker
     subm = Submission.new user_id: user_id, assignment_id: task_id, jid: jid, status: :started
     subm.save!
 
-    `bash #{TESTER_SCRIPT} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
+    score = 0
 
-    report = JSON.load File.open('./log/test.log')
-    feedback = File.read('./log/output.log')
+    begin
+      `bash #{TESTER_SCRIPT} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
 
-    puts report
+      report = JSON.load File.open('./log/test.log')
+      feedback = File.read('./log/output.log')
 
-    score = report['numPassedTestSuites'] / (report['numFailedTestSuites'] + report['numPassedTestSuites'])
+      scores = []
 
-    consumer = OAuth::Consumer.new(task.course.user.key, task.course.user.secret)
-    token = OAuth::AccessToken.new(consumer)
+      report["testResults"].each do |tr|
+        tr["assertionResults"].each do |res|
+          weight = task.weights.find_by_name res['title']
+          puts res['title']
+          puts res['status']
+          puts (if (res['status'] == 'passed') then (weight.try(:weight) || 1) else 0 end)
+          puts (res['status'] == 'passed')
+          puts '---------++++'
+          scores << (if (res['status'] == 'passed') then (weight.try(:weight) || 1) else 0 end)
+        end
+      end
 
-    template = File.read('./app/views/score_response.haml')
-    xml_response = Haml::Engine.new(template).render(Object.new, { session: session, score: score })
+      score = (scores.inject{ |sum, el| sum + (el || 0) }.to_f / scores.size) || 0
+      score = if score.nan? then 0 else score end
+    ensure
+      consumer = OAuth::Consumer.new(task.course.user.key, task.course.user.secret)
+      token = OAuth::AccessToken.new(consumer)
 
-    subm.status = :finished
-    subm.score = score
-    subm.feedback = feedback
-    subm.save!
+      template = File.read('./app/views/score_response.haml')
+      xml_response = Haml::Engine.new(template).render(Object.new, { session: session, score: score })
 
-    response = token.post(url, xml_response, 'Content-Type' => 'application/xml')
+      subm.status = :finished
+      subm.score = score
+      subm.feedback = feedback
+      subm.save!
 
-    puts %{
-      Your score has #{response.body.match(/\bsuccess\b/) ? "been posted" : "failed in posting"} to Canvas. The response was:
+      response = token.post(url, xml_response, 'Content-Type' => 'application/xml')
 
-      #{response.body}
-        }
+      puts %{
+        Your score has #{response.body.match(/\bsuccess\b/) ? "been posted" : "failed in posting"} to Canvas. The response was:
+
+        #{response.body}
+          }
+    end
   end
 
   def cancelled?

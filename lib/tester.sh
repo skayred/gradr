@@ -14,7 +14,8 @@ for (( j=1; j<argc; j++ )); do
 done
 cd origin
 npm install
-npm install --save-dev react-testing-library
+npm install --save-dev @testing-library/react
+npm install --save-dev jest-runtime
 CI=true node ./node_modules/react-scripts/bin/react-scripts test --env=jsdom --json > ../../log/test.log 2> ../../log/output.log
 cd ../..
 rm -rf ./reps

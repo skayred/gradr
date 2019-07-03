@@ -1,0 +1,8 @@
+= form_for @invite do |f|
+  %fieldset
+    %legend
+      Create invite
+    .form-group
+      %label Email to invite
+      %input.form-control{type: 'text', name: 'invite[email]'}
+    = f.submit 'Submit', class: 'btn btn-success'
