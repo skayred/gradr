@@ -54,6 +54,6 @@ class AssignmentsController < ApplicationController
   end
 
   def assignment_params
-    params.require(:assignment).permit(:name, :cooldown)
+    params.require(:assignment).permit(:name, :cooldown, :script_name)
   end
 end
