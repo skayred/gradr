@@ -15,6 +15,7 @@ done
 cd origin
 cp ../../lib/_jest.config.js .
 cp ../../lib/.babelrc .
+cp ../../lib/fileMock.js .
 npm install
 npm install --save-dev @testing-library/dom @testing-library/jest-dom jest jest-css-modules jest-css-modules-transform @babel/core babel-jest
 node ./node_modules/jest/bin/jest.js --config _jest.config.js --json > ../../log/test.log 2> ../../log/output.log
