@@ -2,10 +2,12 @@ class TesterWorker
   include Sidekiq::Worker
   include Sidekiq::Status::Worker
 
-  TESTER_SCRIPT = './lib/tester.sh'
+  # TESTER_SCRIPT = './lib/tester.sh'
 
   def perform(task_id, source_rep, session, url, user_id)
     task = Assignment.find_by_id task_id
+
+    tester_script = task.script_name
 
     subm = Submission.new user_id: user_id, assignment_id: task_id, jid: jid, status: :started
     subm.save!
@@ -13,7 +15,7 @@ class TesterWorker
     score = 0
 
     begin
-      `bash #{TESTER_SCRIPT} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
+      `bash #{tester_script} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
 
       report = JSON.load File.open('./log/test.log')
       feedback = File.read('./log/output.log')
