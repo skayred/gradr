@@ -17,20 +17,26 @@ class TesterWorker
     begin
       `bash #{tester_script} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
 
-      report = JSON.load File.open('./log/test.log')
       feedback = File.read('./log/output.log')
-
       scores = []
 
-      report["testResults"].each do |tr|
-        tr["assertionResults"].each do |res|
-          weight = task.weights.find_by_name res['title']
-          puts res['title']
-          puts res['status']
-          puts (if (res['status'] == 'passed') then (weight.try(:weight) || 1) else 0 end)
-          puts (res['status'] == 'passed')
-          puts '---------++++'
-          scores << (if (res['status'] == 'passed') then (weight.try(:weight) || 1) else 0 end)
+      if File.exist?('./log/mocha-output.json')
+        report = JSON.load File.open('./log/test.log')
+
+        report.flatten.each do |el|
+          el.each do |k,v|
+            weight = task.weights.find_by_name k
+            scores << (if (v == 'PASSED') then (weight.try(:weight) || 1) else 0 end)
+          end if el.class == Hash
+        end
+      else
+        report = JSON.load File.open('./log/test.log')
+
+        report["testResults"].each do |tr|
+          tr["assertionResults"].each do |res|
+            weight = task.weights.find_by_name res['title']
+            scores << (if (res['status'] == 'passed') then (weight.try(:weight) || 1) else 0 end)
+          end
         end
       end
 
