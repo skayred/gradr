@@ -16,12 +16,17 @@ for (( j=1; j<argc; j++ )); do
 done
 cd origin
 cp ../../lib/cypress.json .
-npm install
-npm install --save-dev cypress mocha mochawesome
-npm run start &
-PROC_PID=$!
+cp ../../lib/port.sh .
+
+PORT="$(bash ./port.sh)"
+docker build -t $SOURCE_REP -f docker/Dockerfile .
+docker run -p 8080:$PORT -l $SOURCE_REP parcel-test
+
+npm install -g cypress mocha mochawesome
 npx cypress run --reporter mocha-spec-json-reporter > ../../log/output.log
 mv mocha-output.json ../../log/
-kill $PROC_PID
+
+docker rmi --force $(docker images -q $SOURCE_REP | uniq)
+
 cd ../..
-rm -rf ./reps
+#rm -rf ./reps
