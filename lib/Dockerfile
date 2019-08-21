@@ -15,7 +15,7 @@ COPY index.html package*.json ./
 
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn
-RUN npm ci
+RUN npm install
 
 # Build the application
 ENV NODE_ENV production

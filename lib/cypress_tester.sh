@@ -23,12 +23,13 @@ cp ../../lib/start2.sh docker/
 
 PORT="$(bash ./port.sh)"
 docker build -t $SOURCE_REP -f docker/Dockerfile .
-docker run -p 8080:$PORT -l $SOURCE_REP parcel-test
+DOCKER_PID="$(docker run -d -p 8080:$PORT --name $SOURCE_REP $SOURCE_REP)"
 
-npm install -g cypress mocha mochawesome
+npm install -g cypress mocha mocha-spec-json-reporter
 npx cypress run --reporter mocha-spec-json-reporter > ../../log/output.log
 mv mocha-output.json ../../log/
 
+docker kill $DOCKER_PID
 docker rmi --force $(docker images -q $SOURCE_REP | uniq)
 
 cd ../..
