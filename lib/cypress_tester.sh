@@ -17,6 +17,9 @@ done
 cd origin
 cp ../../lib/cypress.json .
 cp ../../lib/port.sh .
+mkdir docker
+cp ../../lib/Dockerfile docker/
+cp ../../lib/start2.sh docker/
 
 PORT="$(bash ./port.sh)"
 docker build -t $SOURCE_REP -f docker/Dockerfile .
