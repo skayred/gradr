@@ -15,13 +15,13 @@ for (( j=1; j<argc; j++ )); do
   yes | cp -rf ./tests$j/cypress/integration/* ./origin/cypress/integration/
 done
 cd origin
-cp ../../lib/cypress.json .
 cp ../../lib/port.sh .
 mkdir docker
 cp ../../lib/Dockerfile docker/
 cp ../../lib/start2.sh docker/
 
 PORT="$(bash ./port.sh)"
+echo "{\"baseUrl\": \"http://localhost:$PORT/\"}" > cypress.json
 docker build -t $SOURCE_REP -f docker/Dockerfile .
 DOCKER_PID="$(docker run  -d -p 8080:$PORT --name $SOURCE_REP --rm $SOURCE_REP)"
 
