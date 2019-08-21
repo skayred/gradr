@@ -22,9 +22,9 @@ cp ../../lib/start2.sh docker/
 
 PORT="$(bash ./port.sh)"
 echo "{\"baseUrl\": \"http://localhost:$PORT/\"}" > cypress.json
-docker build -t $SOURCE_REP -f docker/Dockerfile .
-docker kill $DOCKER_PID
-DOCKER_PID="$(docker run  -d -p $PORT:80 --name $SOURCE_REP --rm $SOURCE_REP)"
+docker build -t $PORT -f docker/Dockerfile .
+docker kill $PORT
+DOCKER_PID="$(docker run  -d -p $PORT:80 --name $PORT --rm $PORT)"
 
 npm install --save-dev cypress mocha mocha-spec-json-reporter
 npx cypress run --reporter mocha-spec-json-reporter > ../../log/output.log
