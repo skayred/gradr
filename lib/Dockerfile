@@ -1,5 +1,8 @@
 FROM node:8.16-alpine
 
+# To handle 'not get uid/gid'
+RUN npm config set unsafe-perm true
+
 # Install git and parcel
 RUN apk update && apk --no-cache add git curl && \
     npm install -g parcel-bundler
