@@ -31,8 +31,8 @@ npm install --save-dev cypress mocha mocha-spec-json-reporter
 npx cypress run --reporter mocha-spec-json-reporter > ../../log/output.log
 cp ./mocha-output.json ../../log/
 
-#docker kill $DOCKER_PID
-docker rmi --force $(docker images -q $SOURCE_REP | uniq)
+docker kill $PORT
+#docker rmi --force $(docker images -q $SOURCE_REP | uniq)
 
 cd ..
 # rm -rf ./origin$UUID
