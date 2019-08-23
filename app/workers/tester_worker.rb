@@ -17,6 +17,10 @@ class TesterWorker
     begin
       `bash #{tester_script} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
 
+      while !File.exist?('./log/output.log') do
+        sleep(1)
+      end
+
       feedback = File.read('./log/output.log')
       scores = []
 

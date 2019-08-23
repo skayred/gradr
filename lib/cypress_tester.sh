@@ -9,6 +9,8 @@ UUID="$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 6)"
 
 PORT="$(bash ./lib/port.sh)"
 
+rm log/output.log
+
 mkdir reps
 cd reps
 git clone $SOURCE_REP origin$UUID
