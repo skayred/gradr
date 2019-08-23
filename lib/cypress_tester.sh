@@ -29,7 +29,7 @@ DOCKER_PID="$(docker run -d -p $PORT:80 --name $PORT --rm $PORT)"
 
 npm install --save-dev cypress mocha mocha-spec-json-reporter
 npx cypress run --reporter mocha-spec-json-reporter > ../../log/output.log
-mv mocha-output.json ../../log/
+cp ./mocha-output.json ../../log/
 
 #docker kill $DOCKER_PID
 docker rmi --force $(docker images -q $SOURCE_REP | uniq)
