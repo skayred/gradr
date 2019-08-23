@@ -35,5 +35,5 @@ cp ./mocha-output.json ../../log/
 docker rmi --force $(docker images -q $SOURCE_REP | uniq)
 
 cd ..
-rm -rf ./origin$UUID
+# rm -rf ./origin$UUID
 rm -rf ./tests*$UUID
