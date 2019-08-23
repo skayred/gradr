@@ -5,22 +5,22 @@ argv=($@)
 
 SOURCE_REP=$1
 
+PORT="$(bash ../../lib/port.sh)"
+
 mkdir reps
 cd reps
-git clone $SOURCE_REP origin
-mkdir origin/cypress
-mkdir origin/cypress/integration
+git clone $SOURCE_REP origin$PORT
+mkdir origin$PORT/cypress
+mkdir origin$PORT/cypress/integration
 for (( j=1; j<argc; j++ )); do
-  git clone ${argv[j]} tests$j
-  yes | cp -rf ./tests$j/cypress/integration/* ./origin/cypress/integration/
+  git clone ${argv[j]} tests$j$PORT
+  yes | cp -rf ./tests$j$PORT/cypress/integration/* ./origin$PORT/cypress/integration/
 done
-cd origin
-cp ../../lib/port.sh .
+cd origin$PORT
 mkdir docker
 cp ../../lib/Dockerfile docker/
 cp ../../lib/start2.sh docker/
 
-PORT="$(bash ./port.sh)"
 echo "{\"baseUrl\": \"http://localhost:$PORT/\"}" > cypress.json
 docker build -t $PORT -f docker/Dockerfile .
 docker kill $PORT
