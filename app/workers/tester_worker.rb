@@ -20,8 +20,8 @@ class TesterWorker
       feedback = File.read('./log/output.log')
       scores = []
 
-      if File.exist?('./log/mocha-output.json')
-        report = JSON.load File.open('./log/mocha-output.log')
+      if File.exist?('./mocha-output.json')
+        report = JSON.load File.open('./mocha-output.log')
 
         report.flatten.each do |el|
           el.each do |k,v|
