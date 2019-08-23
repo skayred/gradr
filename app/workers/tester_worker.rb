@@ -21,7 +21,7 @@ class TesterWorker
       scores = []
 
       if File.exist?('./log/mocha-output.json')
-        report = JSON.load File.open('./log/test.log')
+        report = JSON.load File.open('./log/mocha-output.log')
 
         report.flatten.each do |el|
           el.each do |k,v|
