@@ -7,7 +7,7 @@ SOURCE_REP=$1
 
 UUID="$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 6)"
 
-PORT="$(bash ../../lib/port.sh)"
+PORT="$(bash ./lib/port.sh)"
 
 mkdir reps
 cd reps
