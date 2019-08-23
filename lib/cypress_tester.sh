@@ -37,6 +37,8 @@ cp ./mocha-output.json ../..
 docker kill $PORT
 #docker rmi --force $(docker images -q $SOURCE_REP | uniq)
 
+echo 'Script finished!'
+
 cd ..
 # rm -rf ./origin$UUID
 rm -rf ./tests*$UUID

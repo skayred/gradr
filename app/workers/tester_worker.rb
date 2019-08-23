@@ -18,6 +18,7 @@ class TesterWorker
       `bash #{tester_script} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
 
       while !File.exist?('./log/output.log') do
+        puts 'Wololo'
         sleep(1)
       end
 
