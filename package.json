@@ -1,5 +1,10 @@
 {
   "name": "tdd-lti",
   "private": true,
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "cypress": "^3.4.1",
+    "mocha": "^6.2.0",
+    "mocha-spec-json-reporter": "0.0.2"
+  }
 }

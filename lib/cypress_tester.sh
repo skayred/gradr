@@ -3,11 +3,9 @@
 argc=$#
 argv=($@)
 
-SOURCE_REP=$1
-
-UUID="$(cat /dev/urandom | tr -cd 'a-f0-9' | head -c 6)"
-
-PORT="$(bash ./lib/port.sh)"
+UUID=$1
+PORT=$2
+SOURCE_REP=$3
 
 rm log/output.log
 
@@ -16,7 +14,7 @@ cd reps
 git clone $SOURCE_REP origin$UUID
 mkdir origin$UUID/cypress
 mkdir origin$UUID/cypress/integration
-for (( j=1; j<argc; j++ )); do
+for (( j=3; j<argc; j++ )); do
   git clone ${argv[j]} tests$j$UUID
   yes | cp -rf ./tests$j$UUID/cypress/integration/* ./origin$UUID/cypress/integration/
 done
@@ -25,20 +23,20 @@ mkdir docker
 cp ../../lib/Dockerfile docker/
 cp ../../lib/start2.sh docker/
 
+docker rmi PORT
 echo "{\"baseUrl\": \"http://localhost:$PORT/\"}" > cypress.json
 docker build -t $PORT -f docker/Dockerfile .
+echo 'Built!'
 DOCKER_PID="$(docker run -d -p $PORT:80 --name $PORT --rm $PORT)"
+echo 'Run!'
 
 npm install --save-dev cypress mocha mocha-spec-json-reporter
-npx cypress run --reporter mocha-spec-json-reporter > ../../log/output.log
-cp ./mocha-output.json ../../log/
-cp ./mocha-output.json ../..
+npx cypress run --reporter mocha-spec-json-reporter > ../../log/output$PORT.log
+cp ./mocha-output.json ../../log/mocha-output$PORT.json
 
 docker kill $PORT
-#docker rmi --force $(docker images -q $SOURCE_REP | uniq)
-
-echo 'Script finished!'
+docker rmi $PORT
 
 cd ..
-# rm -rf ./origin$UUID
+rm -rf ./origin$UUID
 rm -rf ./tests*$UUID

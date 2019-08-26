@@ -15,18 +15,16 @@ class TesterWorker
     score = 0
 
     begin
-      `bash #{tester_script} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
+      require 'docker'
+      uuid = `cat /dev/urandom | tr -cd 'a-f0-9' | head -c 6`
+      port = (`bash ./lib/port.sh`).strip
+      `bash #{tester_script} #{uuid} #{port} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
 
-      while !File.exist?('./log/output.log') do
-        puts 'Wololo'
-        sleep(1)
-      end
-
-      feedback = File.read('./log/output.log')
+      feedback = File.read("./log/output#{port}.log")
       scores = []
 
-      if File.exist?('./mocha-output.json')
-        report = JSON.load File.open('./mocha-output.log')
+      if File.exist?("./mocha-output${port}.json")
+        report = JSON.load File.open("./mocha-output${port}.json")
 
         report.flatten.each do |el|
           el.each do |k,v|

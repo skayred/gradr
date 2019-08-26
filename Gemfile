@@ -15,6 +15,7 @@ gem 'sidekiq'
 gem 'sidekiq-status'
 gem 'bootstrap-editable-rails'
 gem 'breadcrumbs_on_rails'
+gem 'docker-api'
 
 gem 'capistrano3-puma', github: "seuros/capistrano-puma"
 gem 'capistrano-bundler', '~> 1.1.2'
