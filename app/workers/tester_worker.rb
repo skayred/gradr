@@ -17,14 +17,16 @@ class TesterWorker
     begin
       require 'docker'
       uuid = `cat /dev/urandom | tr -cd 'a-f0-9' | head -c 6`
+      # uuid = 66874
       port = (`bash ./lib/port.sh`).strip
+
       `bash #{tester_script} #{uuid} #{port} #{source_rep} #{task.test_reps.select(:name).pluck(:name).join(' ')}`
 
       feedback = File.read("./log/output#{port}.log")
       scores = []
 
-      if File.exist?("./mocha-output${port}.json")
-        report = JSON.load File.open("./mocha-output${port}.json")
+      if File.exist?("./log/mocha-output#{port}.json")
+        report = JSON.load File.open("./log/mocha-output#{port}.json")
 
         report.flatten.each do |el|
           el.each do |k,v|

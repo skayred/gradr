@@ -7,8 +7,6 @@ UUID=$1
 PORT=$2
 SOURCE_REP=$3
 
-rm log/output.log
-
 mkdir reps
 cd reps
 git clone $SOURCE_REP origin$UUID
