@@ -54,6 +54,8 @@ class TesterWorker
       template = File.read('./app/views/score_response.haml')
       xml_response = Haml::Engine.new(template).render(Object.new, { session: session, score: score })
 
+      puts xml_response
+
       subm.status = :finished
       subm.score = score
       subm.feedback = feedback
