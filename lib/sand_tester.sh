@@ -20,6 +20,7 @@ cd origin$UUID
 
 echo "{\"baseUrl\": \"$SOURCE_REP\"}" > cypress.json
 
+npm init -y
 npm install --save-dev cypress mocha mocha-spec-json-reporter
 npx cypress run --reporter mocha-spec-json-reporter > ../../log/output$PORT.log
 cp ./mocha-output.json ../../log/mocha-output$PORT.json
