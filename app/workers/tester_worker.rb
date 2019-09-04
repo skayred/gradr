@@ -27,6 +27,7 @@ class TesterWorker
 
       if File.exist?("./log/mocha-output#{port}.json")
         report = JSON.load File.open("./log/mocha-output#{port}.json")
+        feedback = feedback + JSON.pretty_generate(report)
 
         report.flatten.each do |el|
           el.each do |k,v|

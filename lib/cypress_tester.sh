@@ -31,7 +31,6 @@ echo 'Run!'
 npm install --save-dev cypress mocha mocha-spec-json-reporter
 npx cypress run --reporter mocha-spec-json-reporter > ../../log/output$PORT.log 2>&1
 cp ./mocha-output.json ../../log/mocha-output$PORT.json
-echo ../../log/mocha-output$PORT.json >> ../../log/output$PORT.log
 
 docker kill $PORT
 docker rmi $PORT
